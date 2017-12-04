@@ -17,13 +17,12 @@ module.exports = function(mongoUrl) {
 
   var plumberSchema = new Schema({
     fullName: String,
+    specialise: String,
     bookings: [{
       day: String,
       slot: String,
-      client: [{
-        name: String,
-        contact: Number
-      }]
+      clientName: String,
+      clientContact: Number
     }]
   })
 

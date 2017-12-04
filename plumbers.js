@@ -14,20 +14,6 @@ module.exports = function(models) {
     })
   }
 
-  //show screen for booking a plumber
-  const plumber = function(req, res, next) {
-    models.plumbers.findOne({
-      fullName: req.params.fullName
-    }, function(err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results) {
-        res.redirect('/api/plumbers/:id');
-      }
-    })
-  }
-
   //see plumbers schedule and make booking for certain slot
 
 
@@ -36,33 +22,36 @@ module.exports = function(models) {
   const index = function(req, res, next) {
     var id = req.params.id;
     var fullName = req.body.fullName;
+    var special = req.body.special;
 
     models.plumbers.findOne({
-fullName: req.body.fullName
+      fullName: req.body.fullName
     }, function(err, plumber) {
       if (err) {
         return next(err);
       }
-      if (!plumber) {
-        if(req.body.fullName !== null){
-          models.plumbers.create({
-            fullName: req.body.fullName
-          }, function(err, newPlumber) {
-            if (err) {
-              return next(err);
-            }
-            if (newPlumber) {
-              res.json(newPlumber);
-              console.log('plumber added');
-            }
-          })
-        }
+      if(plumber) {
+        alert('This plumber already exists')
+      }
+      else {
+        models.plumbers.create({
+          fullName: req.body.fullName,
+          specialise: req.body.special
+        }, function(err, newPlumber) {
+          if (err) {
+            return next(err);
+          }
+          if (newPlumber) {
+            res.json(newPlumber);
+            console.log('plumber added');
+          }
+        })
       }
     })
   }
 
   const bookings = function(req, res, next) {
-var fullName = req.params.fullName;
+    var fullName = req.params.fullName;
     models.plumbers.findOne({
       fullName: req.params.fullName
     }, function(err, plumber) {
@@ -79,20 +68,24 @@ var fullName = req.params.fullName;
   const book = function(req, res, next) {
     console.log('=========');
     var id = req.params.id;
-    var slot = req.params.slot;
-    var day = req.params.day;
 
     models.plumbers.findOne({
       _id: req.params.id
-        }, function(err, result) {
+    }, function(err, result) {
       if (err) {
         return next(err)
       }
       if (result) {
+        var slot = req.params.slot;
+        var day = req.params.day;
+        var clientName = req.body.clientName;
+        var clientContact = req.body.contact;
 
         result.bookings.push({
           day: req.params.day,
-          slot: req.params.slot
+          slot: req.params.slot,
+          clientName: req.body.clientName,
+          clientContact: req.body.contact
         })
         result.save(function(err, booked) {
           console.log(booked);
@@ -112,7 +105,6 @@ var fullName = req.params.fullName;
     home,
     bookings,
     book,
-    plumber,
     index
   }
 
