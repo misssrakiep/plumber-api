@@ -27,13 +27,7 @@ module.exports = function(models) {
     models.plumbers.findOne({
       fullName: req.body.fullName
     }, function(err, plumber) {
-      if (err) {
-        return next(err);
-      }
-      if(plumber) {
-        alert('This plumber already exists')
-      }
-      else {
+      if(plumber === undefined) {
         models.plumbers.create({
           fullName: req.body.fullName,
           specialise: req.body.special
@@ -44,6 +38,12 @@ module.exports = function(models) {
           if (newPlumber) {
             res.json(newPlumber);
             console.log('plumber added');
+          }
+          if (err) {
+            return next(err);
+          }
+          if(plumber) {
+            alert('This plumber already exists')
           }
         })
       }
