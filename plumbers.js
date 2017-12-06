@@ -20,34 +20,29 @@ module.exports = function(models) {
 
   // //log plumber in otherwise register as a new plumber
   const index = function(req, res, next) {
-    var id = req.params.id;
     var fullName = req.body.fullName;
     var special = req.body.special;
-
-    models.plumbers.findOne({
-      fullName: req.body.fullName
+models.plumbers.findOne({
+  fullName : req.body.fullName
+}, function(err, plumber) {
+  if(err){
+    return next(err)
+  }
+  if(!plumber) {
+    models.plumbers.create({
+      fullName : req.body.fullName,
+      specialise : req.body.special
     }, function(err, plumber) {
-      if(plumber === undefined) {
-        models.plumbers.create({
-          fullName: req.body.fullName,
-          specialise: req.body.special
-        }, function(err, newPlumber) {
-          if (err) {
-            return next(err);
-          }
-          if (newPlumber) {
-            res.json(newPlumber);
-            console.log('plumber added');
-          }
-          if (err) {
-            return next(err);
-          }
-          if(plumber) {
-            alert('This plumber already exists')
-          }
-        })
+      if (plumber) {
+        console.log(plumber);
+      }
+      else {
+        return next(err);
       }
     })
+  }
+})
+
   }
 
   const bookings = function(req, res, next) {
