@@ -19,7 +19,7 @@ module.exports = function(models) {
 
 
   // //log plumber in otherwise register as a new plumber
-  const index = function(req, res, next) {
+  const register = function(req, res, next) {
     var fullName = req.body.fullName;
     var special = req.body.special;
 models.plumbers.findOne({
@@ -55,6 +55,11 @@ models.plumbers.findOne({
       }
       if (plumber) {
         res.json(plumber);
+      }
+      if(!plumber){
+        res.json({
+          msg: "This plumber does not exist"
+        })
       }
     })
   }
@@ -99,8 +104,8 @@ models.plumbers.findOne({
   return {
     home,
     bookings,
-    book,
-    index
+    register,
+    book
   }
 
 } //END

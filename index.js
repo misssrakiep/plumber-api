@@ -38,7 +38,7 @@ app.get('/api/plumbers/:fullName', plumbers.bookings)
 //book a plumber in a certain time slot and on a certain day
 app.post('/api/plumbers/:id/slot/:slot/day/:day', plumbers.book);
 // //register as a new plumber
-app.post('/api/plumbers', plumbers.index);
+app.post('/api/plumbers', plumbers.register);
 //
 // //show plumber all his bookings
 // app.get('/api/plumbers/:id/bookings', plumbers.showBookings);

@@ -23,7 +23,8 @@ module.exports = function(mongoUrl) {
       slot: String,
       clientName: String,
       clientContact: Number
-    }]
+    }],
+    msg: String
   })
 
   const plumbers = mongoose.model('plumbers', plumberSchema);
