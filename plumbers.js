@@ -56,13 +56,9 @@ models.plumbers.findOne({
       if (plumber) {
         res.json(plumber);
       }
-      if(!plumber){
-        res.json({
-          msg: "This plumber does not exist"
-        })
-      }
     })
-  }
+    }
+
 
   //book a plumber in a particular time slot for a particular day
   const book = function(req, res, next) {
@@ -79,13 +75,11 @@ models.plumbers.findOne({
         var slot = req.params.slot;
         var day = req.params.day;
         var clientName = req.body.clientName;
-        var clientContact = req.body.contact;
 
         result.bookings.push({
           day: req.params.day,
           slot: req.params.slot,
-          clientName: req.body.clientName,
-          clientContact: req.body.contact
+          clientName: req.params.clientName
         })
         result.save(function(err, booked) {
           console.log(booked);
@@ -100,6 +94,8 @@ models.plumbers.findOne({
       }
     })
   }
+
+
 
   return {
     home,

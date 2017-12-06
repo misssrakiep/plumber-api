@@ -21,10 +21,8 @@ module.exports = function(mongoUrl) {
     bookings: [{
       day: String,
       slot: String,
-      clientName: String,
-      clientContact: Number
-    }],
-    msg: String
+      clientName: String
+        }],
   })
 
   const plumbers = mongoose.model('plumbers', plumberSchema);
