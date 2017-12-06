@@ -21,7 +21,6 @@ module.exports = function(models) {
   // //log plumber in otherwise register as a new plumber
   const register = function(req, res, next) {
     var fullName = req.body.fullName;
-    var special = req.body.special;
 models.plumbers.findOne({
   fullName : req.body.fullName
 }, function(err, plumber) {
@@ -34,6 +33,7 @@ models.plumbers.findOne({
       specialise : req.body.special
     }, function(err, plumber) {
       if (plumber) {
+        res.send(plumber)
         console.log(plumber);
       }
       else {
@@ -54,7 +54,15 @@ models.plumbers.findOne({
         return next(err);
       }
       if (plumber) {
-        res.json(plumber);
+        plumber.save(function(err, newPlumber){
+          if (err) {
+            return next(err)
+          }
+          if (newPlumber) {
+            console.log(newPlumber);
+            res.json(newPlumber)
+          }
+        })
       }
     })
     }
