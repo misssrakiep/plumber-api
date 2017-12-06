@@ -2,9 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Models = require('./plumberModel');
 const bodyParser = require('body-parser');
-const models = Models(process.env.MONGO_DB_URL ||'mongodb://localhost/plumbers');
+const models = Models(process.env.MONGO_DB_URL ||'mongodb://localhost:27017/plumbers');
 const Plumbers = require('./plumbers');
 const plumbers = Plumbers(models);
+const app = express();
 
 
 //RESPONSE HEADERS
